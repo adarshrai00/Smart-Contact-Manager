@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="base :: parent(~{::.content},~{::.title})">
+<head>
+    <meta charset="UTF-8">
+    <title class="title">register</title>
+</head>
+<body>
+<div class="content mt-4  " >
+
+
+    <div class="grid grid-cols-12">
+        <div class="col-span-4"></div>
+        <div class="col-span-4">
+            <div class="block  p-6 bg-white border-t-8 border-blue-700 rounded-xl shadow-xl  dark:bg-gray-800  ">
+
+                <div th:replace="message::messgae"></div>
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Signup Here</h5>
+                <p class=" text-sm text-gray-400 dark:text-gray-400">Welcome to SCM</p>
+
+                 <form novalidate
+                         data-th-action="@{/do-register}"
+                       th:object="${userForm}"
+                       method="post"  class="mt-4">
+
+                     <div   class="mb-3">
+                         <label for="Name"   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                         <input type="text" id="Name"  th:field="*{name}"   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                         dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Name" required />
+                         <p th:if="${#fields.hasErrors('name')}"  class="text-red-600 px-1 py-2">
+                             <!-- Error message will automatically come from Spring Validator -->
+                             Name is Required
+                         </p>
+                     </div>
+                    <!--email-->
+                     <div class="mb-3">
+                         <label for="email" class="block mb-2 text-sm font-medium
+                          text-gray-900 dark:text-white">Your email</label>
+                         <input type="email"
+                                th:field="*{email}"
+                                name="username"
+                                id="email" class="bg-gray-50 border
+                          border-gray-300 text-gray-900 text-sm rounded-lg
+                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                          dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                           dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="email" required />
+                     </div>
+
+                     <div class="mb-3">
+                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New password</label>
+                         <input type="password"
+                                th:field="*{password}"
+                                id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required />
+                     </div>
+                     <div class="mb-3">
+                         <label for="phone" class="block mb-2 text-sm font-medium
+                          text-gray-900 dark:text-white">Contact Number</label>
+                         <input type="number"
+                                th:field="*{phoneNumber}"
+                                id="phone" class="bg-gray-50 border
+                          border-gray-300 text-gray-900 text-sm rounded-lg
+                          focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+                          dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400
+                           dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Phone" required />
+                     </div>
+<!--                     text area-->
+                    <div class="mb-3">
+                        <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">About</label>
+                        <textarea id="message"
+                                  th:field="*{about}"
+                                  rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+
+                    </div>
+                    <div class=" flex justify-center">
+                        <button type="submit" class="text-white bg-purple-600 hover:bg-purple-750
+                         font-medium rounded-lg  px-5 py-2.5 me-2 mb-2
+                         dark:bg-purple-600 dark:hover:bg-purple-800
+
+                         ">Signup</button>
+                        <button type="reset" class="text-white bg-green-600 hover:bg-green-750
+                         font-medium rounded-lg  px-5 py-2.5 me-2 mb-2
+                         dark:bg-green-600 dark:hover:bg-green-800
+
+                         ">Reset</button>
+                    </div>
+                 </form>
+            </div>
+
+        </div>
+<!--        <div class="col-span-4"></div>-->
+    </div>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="base :: parent(~{::.content},~{::.title})">
+<head>
+    <meta charset="UTF-8">
+    <title class="title">register</title>
+</head>
+<body>
+<div class="content mt-4">
+
+    <div class="grid grid-cols-12">
+        <div class="col-span-4"></div>
+        <div class="col-span-4">
+            <div class="block p-6 bg-white border-t-8 border-green-500 rounded-xl shadow-xl dark:bg-gray-800">
+
+                <div th:replace="message::messgae"></div>
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Login Here</h5>
+                <p class="text-sm text-gray-400 dark:text-gray-400">Welcome to SCM</p>
+
+                <div class="text-red-600" th:if="${param.error}">
+                    Invalid username and password.
+                </div>
+                <div class="text-center text-green-600" th:if="${param.logout}">
+                    You have been logged out.
+                </div>
+
+                <form novalidate method="post" th:action="@{'/authenticate'}" class="mt-4">
+                    <!--email-->
+                    <div class="mb-3">
+                        <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                        <input type="email" name="email" id="email"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500
+                               focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
+                               dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500
+                               dark:focus:border-purple-500" placeholder="email" required />
+                    </div>
+
+                    <!--password-->
+                    <div class="mb-3">
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                        <input type="password" name="password" id="password"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+                               focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700
+                               dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                               dark:focus:ring-purple-500 dark:focus:border-purple-500" required />
+                    </div>
+
+                    <!-- login button -->
+                    <div class="flex justify-center">
+                        <button type="submit"
+                                class="text-white bg-purple-600 hover:bg-purple-700 font-medium rounded-lg px-5 py-2.5 me-2 mb-2
+                                dark:bg-purple-600 dark:hover:bg-purple-800 transition duration-200">
+                            Login
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Divider -->
+                <div class="flex items-center my-5">
+                    <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                    <span class="mx-3 text-gray-400 text-sm">or</span>
+                    <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="flex flex-col space-y-3 px-[10px]">
+                    <!-- Google -->
+                    <a href="/oauth2/authorization/google"
+                       class="flex items-center justify-center bg-gray-900 text-white dark:bg-white dark:text-gray-900
+                       font-medium py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm
+                       hover:bg-gray-100 dark:hover:bg-gray-600 transition duration-200">
+                        <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" class="w-5 h-5 mr-2">
+                        Continue with Google
+                    </a>
+
+                    <!-- GitHub -->
+                    <a href="/oauth2/authorization/github"
+                       class="flex items-center justify-center bg-gray-900 text-white font-medium py-2.5 rounded-lg
+                       shadow-sm hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200
+                       border border-transparent dark:border-gray-400 transition duration-200">
+                        <img src="https://www.svgrepo.com/show/512317/github-142.svg" alt="GitHub" class="w-5 h-5 mr-2 dark:invert-0">
+                        Continue with GitHub
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

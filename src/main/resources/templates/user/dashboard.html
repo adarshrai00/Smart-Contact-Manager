@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="base :: parent(~{::#content},~{::.title})">
+<head>
+    <meta charset="UTF-8">
+    <title class="title">Dashboard</title>
+</head>
+<body>
+<div id="content" class="ml-64 p-10 bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+    <!-- Sidebar -->
+    <div th:if="${loggedInUser}">
+        <div th:replace="~{user/sidebar::sidebar}"></div>
+    </div>
+
+    <!-- Welcome Header -->
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+            Welcome back, <span th:text="${loggedInUser.name}">User</span>! 👋
+        </h1>
+        <p class="text-gray-600 dark:text-gray-400">Here's what's happening with your contacts today.</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+        <!-- Total Contacts -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-l-4 border-blue-500 transform hover:scale-105 transition duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Total Contacts</p>
+                    <p class="text-3xl font-bold text-gray-800 dark:text-gray-100"
+                       th:text="${loggedInUser.contacts != null ? #lists.size(loggedInUser.contacts) : 0}">0</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">All your connections</p>
+                </div>
+                <div class="bg-blue-100 dark:bg-blue-900 rounded-full p-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Favorite Contacts (FIXED) -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-l-4 border-yellow-500 transform hover:scale-105 transition duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Favorites</p>
+                    <p class="text-3xl font-bold text-gray-800 dark:text-gray-100">
+                        <span th:text="${favoriteCount != null ? favoriteCount : 0}">0</span>
+                    </p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">Starred contacts</p>
+                </div>
+                <div class="bg-yellow-100 dark:bg-yellow-900 rounded-full p-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-yellow-600 dark:text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.31 4.02a1 1 0 00.95.69h4.23c.97 0 1.372 1.24.588 1.81l-3.42 2.49a1 1 0 00-.364 1.118l1.31 4.02c.3.921-.755 1.688-1.54 1.118l-3.42-2.49a1 1 0 00-1.176 0l-3.42 2.49c-.784.57-1.838-.197-1.54-1.118l1.31-4.02a1 1 0 00-.364-1.118L2.97 9.447c-.784-.57-.382-1.81.588-1.81h4.23a1 1 0 00.95-.69l1.31-4.02z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Added -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-l-4 border-green-500 transform hover:scale-105 transition duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Recent</p>
+                    <p class="text-3xl font-bold text-gray-800 dark:text-gray-100"
+                       th:text="${loggedInUser.contacts != null and #lists.size(loggedInUser.contacts) > 5 ? 5 : (loggedInUser.contacts != null ? #lists.size(loggedInUser.contacts) : 0)}">0</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">Latest contacts</p>
+                </div>
+                <div class="bg-green-100 dark:bg-green-900 rounded-full p-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zm-9 11a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Account Status -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-l-4 border-purple-500 transform hover:scale-105 transition duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 font-medium mb-1">Account</p>
+                    <p class="text-3xl font-bold text-gray-800 dark:text-gray-100" th:text="${loggedInUser.enabled} ? 'Active' : 'Inactive'">Active</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">Fully verified</p>
+                </div>
+                <div class="bg-purple-100 dark:bg-purple-900 rounded-full p-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Recent Contacts -->
+        <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    Recent Contacts
+                </h2>
+                <a href="/user/contact/view" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 text-sm font-medium flex items-center gap-1">
+                    View All
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Recent Contacts List -->
+            <div class="space-y-4">
+                <div th:if="${loggedInUser.contacts == null or #lists.isEmpty(loggedInUser.contacts)}"
+                     class="text-center py-12">
+                    <svg class="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <p class="text-gray-500 dark:text-gray-400 mb-3">No contacts yet</p>
+                    <a href="/user/contact/add" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        Add your first contact
+                    </a>
+                </div>
+
+                <!-- Show last 5 contacts -->
+                <div th:each="contact, iterStat : ${loggedInUser.contacts}"
+                     th:if="${iterStat.index < 5}"
+                     class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                    <div class="flex items-center gap-4">
+                        <img th:if="${contact.picture != null and !contact.picture.isEmpty()}"
+                             th:src="${contact.picture}"
+                             alt="Contact"
+                             class="w-12 h-12 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600">
+                        <div th:if="${contact.picture == null or contact.picture.isEmpty()}"
+                             class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                            <span class="text-white font-bold text-lg" th:text="${#strings.substring(contact.name, 0, 1).toUpperCase()}">A</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800 dark:text-gray-100" th:text="${contact.name}">Contact Name</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400" th:text="${contact.email}">email@example.com</p>
+                        </div>
+                    </div>
+                    <a th:href="@{|/user/contact/view/${contact.id}|}"
+                       class="text-blue-600 hover:text-blue-700 dark:text-blue-400 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions & Profile Summary -->
+        <div class="space-y-6">
+
+            <!-- Profile Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-t-4 border-indigo-500">
+                <div class="flex items-center gap-4 mb-4">
+                    <img th:if="${loggedInUser.profilePic != null and !loggedInUser.profilePic.isEmpty()}"
+                         th:src="${loggedInUser.profilePic}"
+                         alt="Profile"
+                         class="w-16 h-16 rounded-full object-cover border-4 border-gray-100 dark:border-gray-700">
+                    <div th:if="${loggedInUser.profilePic == null or loggedInUser.profilePic.isEmpty()}"
+                         class="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center border-4 border-gray-100 dark:border-gray-700">
+                        <span class="text-white text-2xl font-bold" th:text="${#strings.substring(loggedInUser.name, 0, 1).toUpperCase()}">U</span>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg text-gray-800 dark:text-gray-100" th:text="${loggedInUser.name}">User Name</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400" th:text="${loggedInUser.email}">email@example.com</p>
+                    </div>
+                </div>
+                <a href="/user/profile"
+                   class="block w-full bg-indigo-600 text-white text-center py-2.5 rounded-lg font-semibold hover:bg-indigo-700 transition">
+                    View Profile
+                </a>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Quick Actions
+                </h2>
+                <div class="space-y-3">
+                    <a href="/user/contact/add"
+                       class="flex items-center gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900 dark:bg-opacity-30 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900 dark:hover:bg-opacity-50 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        <span class="font-medium">Add New Contact</span>
+                    </a>
+                    <a href="/user/contact/view"
+                       class="flex items-center gap-3 p-3 rounded-lg bg-green-50 dark:bg-green-900 dark:bg-opacity-30 text-green-700 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900 dark:hover:bg-opacity-50 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <span class="font-medium">View All Contacts</span>
+                    </a>
+                    <a href="/user/profile"
+                       class="flex items-center gap-3 p-3 rounded-lg bg-purple-50 dark:bg-purple-900 dark:bg-opacity-30 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900 dark:hover:bg-opacity-50 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <span class="font-medium">Edit Profile</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tips Card -->
+            <div class="bg-amber-50 dark:bg-gray-800 rounded-xl shadow-lg p-6 border-l-4 border-amber-500">
+                <div class="flex items-start gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-500 flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    <div>
+                        <h3 class="font-bold text-gray-800 dark:text-gray-100 mb-2">Pro Tip!</h3>
+                        <p class="text-sm text-gray-700 dark:text-gray-300">
+                            Use the star icon to mark your important contacts as favorites for quick access.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

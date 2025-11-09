@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="base :: parent(~{::#content},~{::.title})">
+<head>
+    <meta charset="UTF-8">
+    <title class="title">My Profile</title>
+</head>
+<body>
+<div id="content" class="ml-64 p-10 bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+    <!-- Sidebar -->
+    <div th:if="${loggedInUser}">
+        <div th:replace="~{user/sidebar::sidebar}"></div>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100">My Profile</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Manage your personal information and account settings</p>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="max-w-5xl">
+        <!-- Cover/Header Section -->
+        <div class="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-32 rounded-t-xl relative">
+            <!-- Edit Button -->
+            <a href="/user/profile/edit"
+               class="absolute top-4 right-4 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                Edit Profile
+            </a>
+        </div>
+
+        <!-- Main Profile Content -->
+        <div class="bg-white dark:bg-gray-800 rounded-b-xl shadow-lg">
+            <!-- Profile Picture and Name Section -->
+            <div class="px-8 pb-8">
+                <!-- Profile Picture -->
+                <div class="flex items-end -mt-16 mb-6">
+                    <div class="relative">
+                        <img th:if="${loggedInUser.profilePic != null and !loggedInUser.profilePic.isEmpty()}"
+                             th:src="${loggedInUser.profilePic}"
+                             alt="Profile Picture"
+                             class="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-xl">
+
+                        <!-- Default Avatar -->
+                        <div th:if="${loggedInUser.profilePic == null or loggedInUser.profilePic.isEmpty()}"
+                             class="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-white dark:border-gray-800 shadow-xl">
+                            <span class="text-white font-bold text-4xl" th:text="${#strings.substring(loggedInUser.name, 0, 1).toUpperCase()}">U</span>
+                        </div>
+
+                        <!-- Online Status Badge -->
+                        <div class="absolute bottom-2 right-2 w-6 h-6 bg-green-500 rounded-full border-4 border-white dark:border-gray-800"></div>
+                    </div>
+                </div>
+
+                <!-- Name and Basic Info -->
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2" th:text="${loggedInUser.name}">User Name</h2>
+                    <div class="flex items-center gap-4 text-gray-600 dark:text-gray-400">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span th:text="${loggedInUser.email}">email@example.com</span>
+                        </div>
+
+                        <!-- Account Type Badge -->
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                              th:classappend="${loggedInUser.provider.name() == 'SELF'} ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'"
+                              th:text="${loggedInUser.provider.name() == 'SELF'} ? 'Local Account' : ${loggedInUser.provider.name() + ' Account'}">
+                            Account Type
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Profile Information Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Contact Information Card -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            Contact Information
+                        </h3>
+
+                        <div class="space-y-4">
+                            <!-- Email -->
+                            <div>
+                                <label class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Email Address</label>
+                                <div class="flex items-center justify-between mt-1">
+                                    <p class="text-gray-800 dark:text-gray-200 font-medium" th:text="${loggedInUser.email}">email@example.com</p>
+                                    <span th:if="${loggedInUser.emailVerified}"
+                                          class="flex items-center gap-1 text-green-600 dark:text-green-400 text-xs">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Verified
+                                    </span>
+                                    <span th:unless="${loggedInUser.emailVerified}"
+                                          class="flex items-center gap-1 text-orange-600 dark:text-orange-400 text-xs">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                        </svg>
+                                        Not Verified
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">Phone Number</label>
+                                <div class="flex items-center justify-between mt-1">
+                                    <p class="text-gray-800 dark:text-gray-200 font-medium"
+                                       th:text="${loggedInUser.phoneNumber != null and !loggedInUser.phoneNumber.isEmpty()} ? ${loggedInUser.phoneNumber} : 'Not provided'">
+                                        Not provided
+                                    </p>
+                                    <span th:if="${loggedInUser.phoneVerified}"
+                                          class="flex items-center gap-1 text-green-600 dark:text-green-400 text-xs">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                        </svg>
+                                        Verified
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Status Card -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                            Account Status
+                        </h3>
+
+                        <div class="space-y-4">
+                            <!-- Account Enabled -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Account Status</span>
+                                <span th:if="${loggedInUser.enabled}"
+                                      class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                    Active
+                                </span>
+                                <span th:unless="${loggedInUser.enabled}"
+                                      class="px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                    Inactive
+                                </span>
+                            </div>
+
+                            <!-- Provider -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Sign-in Method</span>
+                                <span class="text-gray-800 dark:text-gray-200 font-medium capitalize" th:text="${loggedInUser.provider.name()}">Provider</span>
+                            </div>
+
+                            <!-- Role -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600 dark:text-gray-300">Role</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+                                      th:text="${loggedInUser.role != null} ? ${loggedInUser.role} : 'USER'">
+                                    USER
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- About Section -->
+                <div class="mt-6 bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        About
+                    </h3>
+                    <p class="text-gray-700 dark:text-gray-300 leading-relaxed"
+                       th:text="${loggedInUser.about != null and !loggedInUser.about.isEmpty()} ? ${loggedInUser.about} : 'No information provided yet. Click Edit Profile to add your bio.'">
+                        No information provided yet.
+                    </p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="mt-6 grid grid-cols-3 gap-4">
+                    <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 rounded-xl p-4 text-center">
+                        <div class="text-3xl font-bold text-blue-600 dark:text-blue-300" th:text="${loggedInUser.contacts != null} ? ${#lists.size(loggedInUser.contacts)} : 0">0</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">Total Contacts</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900 dark:to-green-800 rounded-xl p-4 text-center">
+                        <div class="text-3xl font-bold text-green-600 dark:text-green-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">Verified</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900 dark:to-purple-800 rounded-xl p-4 text-center">
+                        <div class="text-3xl font-bold text-purple-600 dark:text-purple-300">Active</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-300 mt-1">Status</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
